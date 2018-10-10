@@ -1,6 +1,6 @@
 #include <Windows.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "Shader.h"
+//#include "Shader.h"
 #include "stb_image.h"
 #include <stdio.h>
 #include <GL/glew.h> /* include GLEW and new version of GL on Windows */
@@ -50,11 +50,52 @@ int main()
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
-	
+	const char* vertexShaderSource =
+		"#version 330 core\n"
+		"layout(location = 0) in vec3 aPos;"
+		"layout (location = 1) in vec3 aColor;"
+		"layout (location = 2) in vec2 aTexCoord;"
+		"out vec3 ourColor;"
+		"out vec2 TexCoord;"
+		"void main() {"
+		"   gl_Position = vec4(aPos, 1.0);"
+		"   ourColor = aColor;"
+		"   TexCoord = vec2(aTexCoord.x, aTexCoord.y);"
+		"}";
+
+	unsigned int vertexShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShader);
+
+	const char* fragmentShaderSource =
+		"#version 330 core\n"
+		"out vec4 FragColor;"
+		"in vec3 ourColor;"
+		"in vec2 TexCoord;"
+		"uniform sampler2D texture1;"
+		"uniform sampler2D texture2;"
+		"void main()	{"
+		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);"
+		"}";
+
+	unsigned int fragmentShader;
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShader);
+
+	int shaderProgram;
+	shaderProgram = glCreateProgram();
+
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
 
 	// build and compile our shader zprogram
 	// ------------------------------------
-	Shader * ourShader = new Shader("shader.vs", "shader.fs"); // you can name your shader files however you like
+
+	//Shader * ourShader = new Shader("shader.vs", "shader.fs"); // you can name your shader files however you like
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -147,11 +188,13 @@ int main()
 
 	// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
 	// -------------------------------------------------------------------------------------------
-	ourShader->use(); // don't forget to activate/use the shader before setting uniforms!
+	//ourShader->use(); // don't forget to activate/use the shader before setting uniforms!
 					 // either set it manually like so:
-	glUniform1i(glGetUniformLocation(ourShader->ID, "texture1"), 0);
+	glUseProgram(shaderProgram);
+	glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 	// or set it via the texture class
-	ourShader->setInt("texture2", 1);
+	glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
+	//ourShader->setInt("texture2", 1);
 
 
 
@@ -175,7 +218,10 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		// render container
-		ourShader->use();
+
+		//ourShader->use();
+		glUseProgram(shaderProgram);
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
