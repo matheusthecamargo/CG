@@ -1,6 +1,6 @@
 #include <Windows.h>
 #define STB_IMAGE_IMPLEMENTATION
-//#include "Shader.h"
+#include "Shader.h"
 #include "stb_image.h"
 #include <stdio.h>
 #include <GL/glew.h> /* include GLEW and new version of GL on Windows */
@@ -19,7 +19,6 @@
 #include <iostream>
 #include <vector>
 
-#include <iostream>
 using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -32,6 +31,38 @@ const unsigned int SCR_HEIGHT = 600;
 
 int main()
 {
+	ObjReader * obj = new ObjReader();
+	Mesh * malha = obj->read("teste.obj");
+	//glm::vec2 testete = malha->getIndT(22);
+	//cout << malha->getGroup(0)->getFace(11)->getV(1);
+
+	//vector<float> vertices;
+	//normais.
+	float vertices[192];
+	unsigned int indices[36];
+	//float * vertices = new float[tam];
+
+	for (int k = 0; k < 24; k++) {
+		vertices[k * 8 + 0] = malha->getIndV(k).x;
+		vertices[k * 8 + 1] = malha->getIndV(k).y;
+		vertices[k * 8 + 2] = malha->getIndV(k).z;
+		vertices[k * 8 + 3] = malha->getIndT(k).x;
+		vertices[k * 8 + 4] = malha->getIndT(k).y;
+		vertices[k * 8 + 5] = malha->getIndN(k).x;
+		vertices[k * 8 + 6] = malha->getIndN(k).y;
+		vertices[k * 8 + 7] = malha->getIndN(k).z;
+	}
+
+	for (int k = 0; k < 12; k++) {
+		indices[k * 3 + 0] = malha->getGroup(0)->getFace(k)->getV(0);
+		indices[k * 3 + 1] = malha->getGroup(0)->getFace(k)->getV(1);
+		indices[k * 3 + 2] = malha->getGroup(0)->getFace(k)->getV(2);
+	}
+
+	vector<Material*> materiais;
+	obj->readermaterial(malha->getnomematerial(), materiais);
+	cout << materiais.at(1)->getArquivo();
+
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
@@ -62,14 +93,11 @@ int main()
 	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	/*glEnable(GL_DEPTH_TEST);
-
+	glEnable(GL_DEPTH_TEST);
+	/*
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
 
@@ -81,11 +109,9 @@ int main()
 	const char* vertexShaderSource =
 		"#version 330 core\n"
 		"layout(location = 0) in vec3 aPos;"
-		"layout (location = 1) in vec3 aColor;"
-		"layout (location = 2) in vec2 aTexCoord;"
-		"layout (location = 3) in vec3 aNormal;"
+		"layout (location = 1) in vec2 aTexCoord;"
+		"layout (location = 2) in vec3 aNormal;"
 		"out vec3 ourPos;"
-		"out vec3 ourColor;"
 		"out vec2 TexCoord;"
 		"out vec3 ourNormal;"
 		"uniform mat4 ModelMatrix;"
@@ -93,7 +119,6 @@ int main()
 		"uniform mat4 ProjectionMatrix;"
 		"void main() {"
 		"   ourPos = vec4(ModelMatrix * vec4(aPos, 1.f)).xyz;"
-		"   ourColor = aColor;"
 		"   TexCoord = vec2(aTexCoord.x, aTexCoord.y * -1.0f);"
 		"   ourNormal = mat3(ModelMatrix) * aNormal;"
 		"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.f);"
@@ -115,7 +140,6 @@ int main()
 	const char* fragmentShaderSource =
 		"#version 330 core\n"
 		"in vec3 ourPos;"
-		"in vec3 ourColor;"
 		"in vec2 TexCoord;"
 		"in vec3 ourNormal;"
 		"out vec4 FragColor;"
@@ -123,18 +147,21 @@ int main()
 		"uniform sampler2D texture2;"
 		"uniform vec3 lightPos0;"
 		"uniform vec3 cameraPos;"
+		"uniform vec3 kambiente;"
+		"uniform vec3 kdifusao;"
+		"uniform vec3 kespecular;"
 		"void main()	{"
-		"   vec3 ambientLight = vec3(0.5f, 0.5f, 0.5f);"
-		"   vec3 posToLightDirVec = normalize(lightPos0 - ourPos);"
-		"   vec3 diffuseColor = vec3(1.f, 1.f, 1.f);"
+		"   vec3 ambientLight = kambiente;"			//ambiente
+		"   vec3 posToLightDirVec = normalize(lightPos0 - ourPos);"	//difusa
+		"   vec3 diffuseColor = kdifusao;"
 		"   float diffuse = clamp(dot(posToLightDirVec, ourNormal), 0, 1);"
 		"   vec3 diffuseFinal = diffuseColor * diffuse;"
-		"   vec3 lightToPosDirVec = normalize(ourPos - lightPos0);"
+		"   vec3 lightToPosDirVec = normalize(ourPos - lightPos0);"		//especular
 		"   vec3 reflectDirVec = normalize(reflect(lightToPosDirVec, normalize(ourNormal)));"
 		"   vec3 posToViewDirVec = normalize(cameraPos - ourPos );"
 		"   float specularConstant = pow(max(dot(posToViewDirVec, reflectDirVec), 0), 30);"
-		"   vec3 specularFinal = vec3(1.f, 1.f, 1.f) * specularConstant;"
-		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2) * (vec4(ambientLight, 1.f) + vec4(diffuseFinal, 1.0f) + vec4(specularFinal, 1.f));"
+		"   vec3 specularFinal = kespecular * specularConstant;"
+		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2) * (vec4(ambientLight, 1.f) + vec4(diffuseFinal, 1.0f) + vec4(specularFinal, 1.f));"	//saida do resultado
 		"}";
 
 	unsigned int fragmentShader;
@@ -156,17 +183,48 @@ int main()
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
-	float vertices[] = {
-		// positions          // colors           // texture coords  //normals
-		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,	0.0f, 0.0f, 1.0f,			// top right
-		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,	0.0f, 0.0f, 1.0f,			// bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,	0.0f, 0.0f, 1.0f,			// bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,	0.0f, 0.0f, 1.0f,			// top left 
-	};
-	unsigned int indices[] = {
+	/*float vertices[] = {
+		// positions            //texturecoords  //normals
+		0.5f,  0.5f, 0.0f,      1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// top right
+		0.5f, -0.5f, 0.0f,      1.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// bottom right
+		-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// bottom left
+		-0.5f,  0.5f, 0.0f,     0.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// top left
+		0.5f,  0.5f, -1.f,      1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// top right back	//2
+		0.5f, -0.5f, -1.f,      1.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// bottom right back
+		-0.5f, -0.5f, -1.f,     0.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// bottom left back
+		-0.5f,  0.5f, -1.f,     0.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// top left back
+		0.5f,  0.5f, -1.f,      1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// top right    //3
+		0.5f, -0.5f, -1.f,      1.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// bottom right 
+		0.5f, -0.5f, 0.0f,      0.0f, 0.0f,		0.0f, 0.0f, 1.0f,			// top left
+		0.5f,  0.5f, 0.0f,      0.0f, 1.0f,		0.0f, 0.0f, 1.0f,			// bottom left
+		-0.5f,  0.5f, 0.0f,     1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			//4
+		-0.5f, -0.5f, 0.0f,     1.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f, -0.5f, -1.f,     0.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, -1.f,     0.0f, 1.0f,		0.0f, 0.0f, 1.0f,
+		0.5f,  0.5f, -1.f,      1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			//5
+		0.5f,  0.5f, 0.0f,      1.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f,     0.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f,  0.5f, -1.f,     0.0f, 1.0f,		0.0f, 0.0f, 1.0f,
+		0.5f, -0.5f, 0.0f,      1.0f, 1.0f,		0.0f, 0.0f, 1.0f,			//6
+		0.5f, -0.5f, -1.f,      1.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f, -0.5f, -1.f,     0.0f, 0.0f,		0.0f, 0.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f,     0.0f, 1.0f,		0.0f, 0.0f, 1.0f
+
+	};*/
+	/*unsigned int indices[] = {
 		0, 1, 3, // first triangle
-		1, 2, 3  // second triangle
-	};
+		1, 2, 3,  // second triangle
+		4, 5, 7, // first triangle
+		5, 6, 7,  // second triangle
+		8, 9, 11, // first triangle
+		9, 10, 11,  // second triangle
+		12, 13, 15, // first triangle
+		13, 14, 15,  // second triangle
+		16, 17, 19, // first triangle
+		17, 18, 19,  // second triangle
+		20, 21, 23, // first triangle
+		21, 22, 23  // second triangle
+	};*/
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -181,20 +239,16 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(3 * sizeof(float)));
+	// texture coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
-	// texture coord attribute
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(8 * sizeof(float)));
-	glEnableVertexAttribArray(3);
 
 	glBindVertexArray(0);
-
 
 	// load and create a texture 
 	// -------------------------
@@ -293,6 +347,9 @@ int main()
 	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
 	glm::vec3 lightPos0(0.0f, 0.f, 1.f);
+	glm::vec3 kambiente = materiais.at(0)->getKA();
+	glm::vec3 kdifusao = materiais.at(0)->getKD();
+	glm::vec3 kespecular = materiais.at(0)->getKS();
 
 	glUseProgram(shaderProgram);
 
@@ -301,6 +358,9 @@ int main()
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
 
 	glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos0"), 1, glm::value_ptr(lightPos0));
+	glUniform3fv(glGetUniformLocation(shaderProgram, "kambiente"), 1, glm::value_ptr(kambiente));
+	glUniform3fv(glGetUniformLocation(shaderProgram, "kdifusao"), 1, glm::value_ptr(kdifusao));
+	glUniform3fv(glGetUniformLocation(shaderProgram, "kespecular"), 1, glm::value_ptr(kespecular));
 	glUniform3fv(glGetUniformLocation(shaderProgram, "cameraPos"), 1, glm::value_ptr(camPosition));
 
 	glUseProgram(0);
@@ -317,7 +377,7 @@ int main()
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// bind textures on corresponding texture units
 		
@@ -355,16 +415,16 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		//glBindVertexArray(0);
-		//glUseProgram(0);
-		//glActiveTexture(0);
-		//glBindTexture(GL_TEXTURE_2D, 0);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		glActiveTexture(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
@@ -417,6 +477,12 @@ void processInput(GLFWwindow *window, glm::vec3& position, glm::vec3& rotation, 
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 		rotation.y += 1.f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+		rotation.x -= 1.f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		rotation.x += 1.f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
 		scale += 0.1f;
