@@ -43,6 +43,12 @@ public:
 	glm::vec3 getKS(void) {
 		return ks;
 	}
+	void addShiny(glm::vec3 x) {
+		shiny = x;
+	}
+	glm::vec3 getShiny(void) {
+		return shiny;
+	}
 	void addARQUIVO(string x)
 	{
 		arquivo = x;
@@ -57,6 +63,7 @@ private:
 	glm::vec3 ka;
 	glm::vec3 kd;
 	glm::vec3 ks;
+	glm::vec3 shiny;
 	string arquivo;
 };
 
@@ -302,28 +309,10 @@ public:
 				sline >> x >> y >> z;
 				material.at(cont - 1)->addKS(glm::vec3(x, y, z));
 			}
-			else if (temp == "usemtl") {
-				int nomearq;
-				sline >> nomearq;
-			//	mesh->getGroup(cont++)->setId(nomearq);
-			}
-			else if (temp == "f") {
-				if (cont == 0) {
-			//		mesh->addGrupo(new Group());
-			//		mesh->getGroup(cont)->setNome("PADRAO");
-			//		mesh->getGroup(cont++)->setId(0);
-				}
-
-				int x, y, z;
-				sline >> x >> y >> z;
-			//	mesh->getGroup(cont - 1)->addFaces(new Face());
-			//	mesh->getGroup(cont - 1)->getFace(cont2)->addV(x);
-			//	mesh->getGroup(cont - 1)->getFace(cont2)->addV(y);
-			//	mesh->getGroup(cont - 1)->getFace(cont2++)->addV(z);
-			//	sline >> w;
-			//	cout << w << " ";
-				//cout << x << y << z;
-				//cout << "\n";
+			else if (temp == "Ns") {
+				float x;
+				sline >> x;
+				material.at(cont - 1)->addShiny(glm::vec3(x, 0, 0));
 			}
 			else {// else-if
 				  // Verificar outras possibilidades:

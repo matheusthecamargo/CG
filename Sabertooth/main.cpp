@@ -107,7 +107,7 @@ int main()
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
 	const char* vertexShaderSource =
-		"#version 330 core\n"
+		"#version 410 core\n"
 		"layout(location = 0) in vec3 aPos;"
 		"layout (location = 1) in vec2 aTexCoord;"
 		"layout (location = 2) in vec3 aNormal;"
@@ -138,7 +138,7 @@ int main()
 	}
 
 	const char* fragmentShaderSource =
-		"#version 330 core\n"
+		"#version 410 core\n"
 		"in vec3 ourPos;"
 		"in vec2 TexCoord;"
 		"in vec3 ourNormal;"
@@ -150,6 +150,7 @@ int main()
 		"uniform vec3 kambiente;"
 		"uniform vec3 kdifusao;"
 		"uniform vec3 kespecular;"
+		"uniform vec3 shiny;"
 		"void main()	{"
 		"   vec3 ambientLight = kambiente;"			//ambiente
 		"   vec3 posToLightDirVec = normalize(lightPos0 - ourPos);"	//difusa
@@ -159,7 +160,7 @@ int main()
 		"   vec3 lightToPosDirVec = normalize(ourPos - lightPos0);"		//especular
 		"   vec3 reflectDirVec = normalize(reflect(lightToPosDirVec, normalize(ourNormal)));"
 		"   vec3 posToViewDirVec = normalize(cameraPos - ourPos );"
-		"   float specularConstant = pow(max(dot(posToViewDirVec, reflectDirVec), 0), 30);"
+		"   float specularConstant = pow(max(dot(posToViewDirVec, reflectDirVec), 0), shiny.x);"
 		"   vec3 specularFinal = kespecular * specularConstant;"
 		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2) * (vec4(ambientLight, 1.f) + vec4(diffuseFinal, 1.0f) + vec4(specularFinal, 1.f));"	//saida do resultado
 		"}";
@@ -176,12 +177,7 @@ int main()
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
 
-	// build and compile our shader zprogram
-	// ------------------------------------
-
-	//Shader * ourShader = new Shader("shader.vs", "shader.fs"); // you can name your shader files however you like
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
+	
 	// ------------------------------------------------------------------
 	/*float vertices[] = {
 		// positions            //texturecoords  //normals
@@ -350,6 +346,7 @@ int main()
 	glm::vec3 kambiente = materiais.at(0)->getKA();
 	glm::vec3 kdifusao = materiais.at(0)->getKD();
 	glm::vec3 kespecular = materiais.at(0)->getKS();
+	glm::vec3 shiny = materiais.at(0)->getShiny();
 
 	glUseProgram(shaderProgram);
 
@@ -362,6 +359,7 @@ int main()
 	glUniform3fv(glGetUniformLocation(shaderProgram, "kdifusao"), 1, glm::value_ptr(kdifusao));
 	glUniform3fv(glGetUniformLocation(shaderProgram, "kespecular"), 1, glm::value_ptr(kespecular));
 	glUniform3fv(glGetUniformLocation(shaderProgram, "cameraPos"), 1, glm::value_ptr(camPosition));
+	glUniform3fv(glGetUniformLocation(shaderProgram, "shiny"), 1, glm::value_ptr(shiny));
 
 	glUseProgram(0);
 
@@ -379,12 +377,6 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// bind textures on corresponding texture units
-		
-
-		// render container
-
-		//ourShader->use();
 		glUseProgram(shaderProgram);
 		glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 		glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
