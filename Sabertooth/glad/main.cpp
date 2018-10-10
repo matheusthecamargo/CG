@@ -24,7 +24,6 @@ using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
-void processInput(GLFWwindow *window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -55,11 +54,6 @@ int main()
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	glewInit();
-
-	int framebufferWidth = 0;
-	int framebufferHeight = 0;
-
-	glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	/*glEnable(GL_DEPTH_TEST);
@@ -73,9 +67,6 @@ int main()
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
 	const char* vertexShaderSource =
@@ -86,14 +77,11 @@ int main()
 		"out vec3 ourPos;"
 		"out vec3 ourColor;"
 		"out vec2 TexCoord;"
-		"uniform mat4 ModelMatrix;"
-		"uniform mat4 ViewMatrix;"
-		"uniform mat4 ProjectionMatrix;"
 		"void main() {"
-		"   ourPos = vec4(ModelMatrix * vec4(aPos, 1.f)).xyz;"
+		"   ourPos = aPos;"
 		"   ourColor = aColor;"
 		"   TexCoord = vec2(aTexCoord.x, aTexCoord.y * -1.0f);"
-		"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.f);"
+		"   gl_Position = vec4(aPos, 1.0);"
 		"}";
 
 	unsigned int vertexShader;
@@ -248,38 +236,6 @@ int main()
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	glm::vec3 position(0.f);
-	glm::vec3 rotation(0.f);
-	glm::vec3 scale(1.f);
-
-	glm::mat4 ModelMatrix(1.f);
-	ModelMatrix = glm::translate(ModelMatrix, position);
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-	ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-	ModelMatrix = glm::scale(ModelMatrix, scale);
-
-	glm::vec3 camPosition(0.f, 0.f, 1.f);
-	glm::vec3 worldUp(0.f, 1.f, 0.f);
-	glm::vec3 camFront(0.f, 0.f, -1.f);
-
-	glm::mat4 ViewMatrix(1.f);
-	ViewMatrix = glm::lookAt(camPosition, camPosition + camFront, worldUp);
-
-	float fov = 90.f;
-	float nearPlane = 0.1f;
-	float farPlane = 1000.f;
-	glm::mat4 ProjectionMatrix(1.f);
-
-	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-
-	glUseProgram(shaderProgram);
-
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-	glUseProgram(0);
 
 	// render loop
 	// -----------
@@ -288,7 +244,6 @@ int main()
 		// input
 		// -----
 		processInput(window);
-		processInput(window, position, rotation, scale);
 
 		// render
 		// ------
@@ -304,27 +259,6 @@ int main()
 		glUseProgram(shaderProgram);
 		glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 0);
 		glUniform1i(glGetUniformLocation(shaderProgram, "texture2"), 1);
-
-		/*position.z -= 0.01f;
-		rotation.y += 2.0;
-		scale.x += 0.01f;*/
-
-		ModelMatrix = glm::mat4(1.f);
-		ModelMatrix = glm::translate(ModelMatrix, position);
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
-		ModelMatrix = glm::scale(ModelMatrix, scale);
-
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-
-		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-
-		ProjectionMatrix = glm::mat4(1.f);
-		ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
-
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glActiveTexture(GL_TEXTURE1);
@@ -372,33 +306,4 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
-}
-
-void processInput(GLFWwindow *window, glm::vec3& position, glm::vec3& rotation, glm::vec3& scale)
-{
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-		position.z += 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		position.z -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		position.x += 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		position.x -= 0.01f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-		rotation.y -= 1.f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-		rotation.y += 1.f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
-		scale += 0.1f;
-	}
-	if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
-		scale -= 0.1f;
-	}
-		
 }
