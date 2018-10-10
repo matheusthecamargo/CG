@@ -83,9 +83,11 @@ int main()
 		"layout(location = 0) in vec3 aPos;"
 		"layout (location = 1) in vec3 aColor;"
 		"layout (location = 2) in vec2 aTexCoord;"
+		"layout (location = 3) in vec3 aNormal;"
 		"out vec3 ourPos;"
 		"out vec3 ourColor;"
 		"out vec2 TexCoord;"
+		"out vec3 ourNormal;"
 		"uniform mat4 ModelMatrix;"
 		"uniform mat4 ViewMatrix;"
 		"uniform mat4 ProjectionMatrix;"
@@ -93,6 +95,7 @@ int main()
 		"   ourPos = vec4(ModelMatrix * vec4(aPos, 1.f)).xyz;"
 		"   ourColor = aColor;"
 		"   TexCoord = vec2(aTexCoord.x, aTexCoord.y * -1.0f);"
+		"   ourNormal = mat3(ModelMatrix) * aNormal;"
 		"   gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(aPos, 1.f);"
 		"}";
 
@@ -114,11 +117,24 @@ int main()
 		"in vec3 ourPos;"
 		"in vec3 ourColor;"
 		"in vec2 TexCoord;"
+		"in vec3 ourNormal;"
 		"out vec4 FragColor;"
 		"uniform sampler2D texture1;"
 		"uniform sampler2D texture2;"
+		"uniform vec3 lightPos0;"
+		"uniform vec3 cameraPos;"
 		"void main()	{"
-		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);"
+		"   vec3 ambientLight = vec3(0.5f, 0.5f, 0.5f);"
+		"   vec3 posToLightDirVec = normalize(lightPos0 - ourPos);"
+		"   vec3 diffuseColor = vec3(1.f, 1.f, 1.f);"
+		"   float diffuse = clamp(dot(posToLightDirVec, ourNormal), 0, 1);"
+		"   vec3 diffuseFinal = diffuseColor * diffuse;"
+		"   vec3 lightToPosDirVec = normalize(ourPos - lightPos0);"
+		"   vec3 reflectDirVec = normalize(reflect(lightToPosDirVec, normalize(ourNormal)));"
+		"   vec3 posToViewDirVec = normalize(cameraPos - ourPos );"
+		"   float specularConstant = pow(max(dot(posToViewDirVec, reflectDirVec), 0), 30);"
+		"   vec3 specularFinal = vec3(1.f, 1.f, 1.f) * specularConstant;"
+		"   FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2) * (vec4(ambientLight, 1.f) + vec4(diffuseFinal, 1.0f) + vec4(specularFinal, 1.f));"
 		"}";
 
 	unsigned int fragmentShader;
@@ -141,11 +157,11 @@ int main()
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
-		// positions          // colors           // texture coords
-		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+		// positions          // colors           // texture coords  //normals
+		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,	0.0f, 0.0f, 1.0f,			// top right
+		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,	0.0f, 0.0f, 1.0f,			// bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,	0.0f, 0.0f, 1.0f,			// bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,	0.0f, 0.0f, 1.0f,			// top left 
 	};
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -165,14 +181,17 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
+	// texture coord attribute
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 11 * sizeof(float), (void*)(8 * sizeof(float)));
+	glEnableVertexAttribArray(3);
 
 	glBindVertexArray(0);
 
@@ -273,11 +292,16 @@ int main()
 
 	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
+	glm::vec3 lightPos0(0.0f, 0.f, 1.f);
+
 	glUseProgram(shaderProgram);
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+
+	glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos0"), 1, glm::value_ptr(lightPos0));
+	glUniform3fv(glGetUniformLocation(shaderProgram, "cameraPos"), 1, glm::value_ptr(camPosition));
 
 	glUseProgram(0);
 
