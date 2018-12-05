@@ -354,23 +354,24 @@ public:
 		infile.close();
 
 		ofstream infile2("curvaoriginal.txt");
-		for (int i = 0; i < original->size() / 6; i++) {
+		for (int i = 0; i < original->size() / 6 - 1; i++) {
 			infile2 << original->at(i*6) << " " << original->at((i * 6)+1) << " " << original->at((i * 6)+2) << "\n";
 		}
+		infile2 << original->at((original->size() / 6 - 1) * 6) << " " << original->at(((original->size() / 6 - 1) * 6) + 1) << " " << original->at(((original->size() / 6 - 1) * 6) + 2);
 		infile2.close();
 
 		ofstream infile3("pista.mtl");
-		infile3 << "newmtl " << "pista" << "\n";
+		infile3 << "newmtl " << "container" << "\n";
 		infile3 << "Ka " << 0.5 << " " << 0.5 << " " << 0.5 << "\n";
 		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
-		infile3 << "Na " << 300.1 << "\n";
-		infile3 << "map_Kd " << "preto.jpg" << "\n";
-		infile3 << "newmtl " << "pista" << "\n";
+		infile3 << "Ns " << 300.100000 << "\n";
+		infile3 << "map_Kd " << "container.jpg" << "\n";
+		infile3 << "newmtl " << "awesomeface" << "\n";
 		infile3 << "Ka " << 0.5 << " " << 0.5 << " " << 0.5 << "\n";
 		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
-		infile3 << "Na " << 300.1 << "\n";
+		infile3 << "Ns " << 300.100000 << "\n";
 		infile3 << "map_Kd " << "awesomeface.png";
 		infile3.close();
 	}

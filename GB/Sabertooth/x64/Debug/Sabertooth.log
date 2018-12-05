@@ -1,73 +1,108 @@
 ﻿  main.cpp
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(209): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(215): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(217): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(219): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(261): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(264): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(265): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(270): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(272): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(275): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(276): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(277): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(297): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(302): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(306): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(311): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(316): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(320): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(358): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(413): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(450): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(451): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(515): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(520): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(560): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(213): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(219): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(221): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(223): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(289): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(294): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(298): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(303): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(308): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(312): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(352): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(407): warning C4244: '=': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(448): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(449): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(455): warning C4244: '=': conversão de 'double' para 'float', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(486): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(487): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(554): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(559): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(609): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(561): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(610): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(569): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(618): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(570): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(619): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(578): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(578): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(627): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(627): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(579): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(579): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(628): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(628): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(580): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(587): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(587): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(629): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(636): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(636): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(588): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(588): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(637): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(637): warning C4244: 'argumento': conversão de 'double' para '_Ty', possível perda de dados
           with
           [
               _Ty=float
           ]
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(589): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
-f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(949): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
-  Sabertooth.vcxproj -> F:\Downloads\Compressed\Nova pasta (2)\Sabertooth-master\x64\Debug\Sabertooth.exe
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(638): warning C4267: 'argumento': conversão de 'size_t' para 'int', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(648): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(657): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(666): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(675): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(1018): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(1085): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(1094): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(1103): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\samsung\desktop\nova pasta\nova pasta (6)\sabertooth-master\sabertooth\main.cpp(1112): warning C4305: 'argumento': truncamento de 'double' para '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+  Sabertooth.vcxproj -> C:\Users\Samsung\Desktop\Nova pasta\Nova pasta (6)\Sabertooth-master\x64\Debug\Sabertooth.exe

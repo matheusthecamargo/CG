@@ -1,12 +1,12 @@
-newmtl pista
+newmtl container
 Ka 0.5 0.5 0.5
 Kd 1 1 1
 Ks 1 1 1
-Na 300.1
-map_Kd preto.jpg
-newmtl pista
+Ns 300.1
+map_Kd container.jpg
+newmtl awesomeface
 Ka 0.5 0.5 0.5
 Kd 1 1 1
 Ks 1 1 1
-Na 300.1
+Ns 300.1
 map_Kd awesomeface.png
