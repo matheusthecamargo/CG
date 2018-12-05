@@ -366,13 +366,13 @@ public:
 		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ns " << 300.100000 << "\n";
-		infile3 << "map_Kd " << "container.jpg" << "\n";
+		infile3 << "map_Kd " << "preto.jpg" << "\n";
 		infile3 << "newmtl " << "awesomeface" << "\n";
 		infile3 << "Ka " << 0.5 << " " << 0.5 << " " << 0.5 << "\n";
 		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ns " << 300.100000 << "\n";
-		infile3 << "map_Kd " << "awesomeface.png";
+		infile3 << "map_Kd " << "awesomeface";
 		infile3.close();
 	}
 

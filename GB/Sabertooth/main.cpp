@@ -43,7 +43,7 @@ vector<GLfloat>* curvaint = new vector<GLfloat>();
 vector<GLfloat>* curvaext = new vector<GLfloat>();
 unsigned int VBO1, VAO1, VBO2, VAO2, VAO3, VBO3, VAO4, VBO4;
 vector<GLfloat>* aux = new vector<GLfloat>();
-GLfloat r=1.0, g=1.0, b=1.0;
+GLfloat r=1.0, g=1.0, b=1.0, z=0.0;
 Mesh * mesh = new Mesh();
 
 vector<GLfloat>* vert2 = new vector<GLfloat>();
@@ -272,6 +272,7 @@ void processInput(GLFWwindow *window)	//metodo de eventos no teclado
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {		//diminuir o r da "altura" para mudar de cores da curva normal
 		if (r > 0 && r <= 1.0) {
 			r = r - 0.02;
+			z = z - 0.002;
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {		//g
@@ -286,6 +287,7 @@ void processInput(GLFWwindow *window)	//metodo de eventos no teclado
 	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {	//aumentar o rgb agora, r
 		if (r >= 0 && r < 1.0) {
 			r = r + 0.02;
+			z = z + 0.002;
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) {	//g
@@ -458,7 +460,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 			vert->push_back(x);		//seta a posição como vertice de controle
 			vert->push_back(y);
-			vert->push_back(0.0);
+			vert->push_back(z);
 
 			vert->push_back(r);
 			vert->push_back(g);		//adiciona o parametro da cor tambem
@@ -598,7 +600,7 @@ int desenhofinal() {					//metodo para desenhar novamente, só que agora com a an
 
 	vert2->push_back(vert->at(0));				//pegar os primeiros vertices da pista para mapear o carro 
 	vert2->push_back(vert->at(1));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(2)+0.01);
 	vert2->push_back(1.0);
 	vert2->push_back(1.0);
 	vert2->push_back(malha->getIndN(0).x);
@@ -607,7 +609,7 @@ int desenhofinal() {					//metodo para desenhar novamente, só que agora com a an
 
 	vert2->push_back(vert->at(8));
 	vert2->push_back(vert->at(9));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(10)+ 0.01);
 	vert2->push_back(1.0);
 	vert2->push_back(0.0);
 	vert2->push_back(malha->getIndN(0).x);
@@ -616,7 +618,7 @@ int desenhofinal() {					//metodo para desenhar novamente, só que agora com a an
 
 	vert2->push_back(vert->at(16));
 	vert2->push_back(vert->at(17));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(18)+0.01);
 	vert2->push_back(0.0);
 	vert2->push_back(0.0);
 	vert2->push_back(malha->getIndN(0).x);
@@ -625,7 +627,7 @@ int desenhofinal() {					//metodo para desenhar novamente, só que agora com a an
 
 	vert2->push_back(vert->at(24));
 	vert2->push_back(vert->at(25));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(26)+0.01);
 	vert2->push_back(0.0);
 	vert2->push_back(1.0);
 	vert2->push_back(malha->getIndN(0).x);
@@ -825,7 +827,7 @@ int desenhofinal() {					//metodo para desenhar novamente, só que agora com a an
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		//std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
 
@@ -1013,7 +1015,7 @@ void movimentar(vector<float> * vert, int contador) {		//atualizar os pontos do 
 	vert2->clear();
 	vert2->push_back(vert->at(contador*32));
 	vert2->push_back(vert->at(contador*32+1));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(contador * 32 + 2)+0.01);
 	vert2->push_back(1.0);
 	vert2->push_back(1.0);
 	vert2->push_back(0);
@@ -1022,7 +1024,7 @@ void movimentar(vector<float> * vert, int contador) {		//atualizar os pontos do 
 
 	vert2->push_back(vert->at(contador * 32 + 8));
 	vert2->push_back(vert->at(contador * 32 + 9));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(contador * 32 + 10)+0.01);
 	vert2->push_back(1.0);
 	vert2->push_back(0.0);
 	vert2->push_back(0);
@@ -1031,7 +1033,7 @@ void movimentar(vector<float> * vert, int contador) {		//atualizar os pontos do 
 
 	vert2->push_back(vert->at(contador * 32 + 16));
 	vert2->push_back(vert->at(contador * 32 + 17));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(contador * 32 + 18)+0.01);
 	vert2->push_back(0.0);
 	vert2->push_back(0.0);
 	vert2->push_back(0);
@@ -1040,7 +1042,7 @@ void movimentar(vector<float> * vert, int contador) {		//atualizar os pontos do 
 
 	vert2->push_back(vert->at(contador * 32 + 24));
 	vert2->push_back(vert->at(contador * 32 + 25));
-	vert2->push_back(0.01);
+	vert2->push_back(vert->at(contador * 32 + 26) + 0.01);
 	vert2->push_back(0.0);
 	vert2->push_back(1.0);
 	vert2->push_back(0);
