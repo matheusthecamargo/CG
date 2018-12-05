@@ -1,0 +1,6 @@
+﻿  main.cpp
+f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(189): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(194): warning C4267: 'argumento': conversão de 'size_t' para 'GLsizei', possível perda de dados
+f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(274): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+f:\downloads\compressed\nova pasta (2)\sabertooth-master\sabertooth\main.cpp(275): warning C4244: 'inicializando': conversão de 'double' para 'GLfloat', possível perda de dados
+  Sabertooth.vcxproj -> F:\Downloads\Compressed\Nova pasta (2)\Sabertooth-master\x64\Debug\Sabertooth.exe
