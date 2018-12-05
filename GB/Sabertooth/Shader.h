@@ -336,7 +336,7 @@ private:
 public:
 	void arquivo(Mesh * mesh, vector<float> * original) {
 		ofstream infile("teste2.obj");
-		//infile.write("teste", 0);
+		//escritor de objs
 		infile << "mtllib " << mesh->getnomematerial() << "\n";
 		for (int x = 0; x < mesh->getVector().size(); x++) {
 			infile << "v " << mesh->getIndV(x).x << " " << mesh->getIndV(x).y << " " << mesh->getIndV(x).z << "\n";
