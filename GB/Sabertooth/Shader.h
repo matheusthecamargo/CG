@@ -329,3 +329,44 @@ public:
 	}
 
 };
+
+class ObjWriter
+{
+private:
+public:
+	void arquivo(Mesh * mesh, vector<float> * original) {
+		ofstream infile("teste2.obj");
+		//infile.write("teste", 0);
+		infile << "mtllib " << mesh->getnomematerial() << "\n";
+		for (int x = 0; x < mesh->getVector().size(); x++) {
+			infile << "v " << mesh->getIndV(x).x << " " << mesh->getIndV(x).y << " " << mesh->getIndV(x).z << "\n";
+		}
+		infile << "vn " << mesh->getIndN(0).x << " " << mesh->getIndN(0).y << " " << mesh->getIndN(0).z << "\n";
+		infile << "vt " << mesh->getIndT(0).x << " " << mesh->getIndT(0).y << "\n";
+		infile << "vt " << mesh->getIndT(1).x << " " << mesh->getIndT(1).y << "\n";
+		infile << "vt " << mesh->getIndT(2).x << " " << mesh->getIndT(2).y << "\n";
+		infile << "vt " << mesh->getIndT(3).x << " " << mesh->getIndT(3).y << "\n";
+		infile << "g " << mesh->getGroup(0)->getNome() << "\n";
+		infile << "usemtl " << mesh->getGroup(0)->getId();
+		for (int y = 0; y < mesh->getVector().size(); y++) {
+			infile << "\n" << "f " << mesh->getGroup(0)->getFaces().at(y)->getV(0) << " " << mesh->getGroup(0)->getFaces().at(y)->getV(1) << " " << mesh->getGroup(0)->getFaces().at(y)->getV(2);
+		}
+		infile.close();
+
+		ofstream infile2("curvaoriginal.txt");
+		for (int i = 0; i < original->size() / 6; i++) {
+			infile2 << original->at(i*6) << " " << original->at((i * 6)+1) << " " << original->at((i * 6)+2) << "\n";
+		}
+		infile2.close();
+
+		ofstream infile3("pista.mtl");
+		infile3 << "newmtl " << "pista" << "\n";
+		infile3 << "Ka " << 0.5 << " " << 0.5 << " " << 0.5 << "\n";
+		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
+		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
+		infile3 << "Na " << 300.1 << "\n";
+		infile3 << "map_Kd " << "pista.jpg";
+		infile3.close();
+	}
+
+};

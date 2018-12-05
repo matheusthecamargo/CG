@@ -1,0 +1,6 @@
+newmtl pista
+Ka 0.5 0.5 0.5
+Kd 1 1 1
+Ks 1 1 1
+Na 300.1
+map_Kd pista.jpg
