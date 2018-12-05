@@ -480,7 +480,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		//cout << "teste";
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		cout << xpos << " " << ypos;
+		cout << xpos << " " << ypos << " ";
 	}
 }
 
@@ -547,29 +547,79 @@ void gerarCurva() {
 
 int desenhofinal() {
 	ObjReader * obj = new ObjReader();
-	Mesh * malha = obj->read("teste.obj");
+	Mesh * malha = obj->read("teste2.obj");
 
 	vector<GLfloat>* vert = new vector<GLfloat>();
 	vector<GLint>* indi = new vector<GLint>();
 
-	for (int k = 0; k < malha->getVector().size(); k++) {
-		vert->push_back(malha->getIndV(k).x);
+	int l = 0;
+	//cout << malha->getVector().size();
+	//cin >> l;
+
+	for (int k = 0; k < malha->getVector().size()/2; k++) {
+		vert->push_back(malha->getIndV(k).x / 860.0);
+		vert->push_back(malha->getIndV(k).y / 640.0);
+		vert->push_back(malha->getIndV(k).z);
+		vert->push_back(malha->getIndT(0).x);
+		vert->push_back(malha->getIndT(0).y);
+		vert->push_back(malha->getIndN(0).x);
+		vert->push_back(malha->getIndN(0).y);
+		vert->push_back(malha->getIndN(0).z);
+
+		vert->push_back(malha->getIndV(k+1).x / 860.0);
+		vert->push_back(malha->getIndV(k+1).y / 640.0);
+		vert->push_back(malha->getIndV(k+1).z);
+		vert->push_back(malha->getIndT(1).x);
+		vert->push_back(malha->getIndT(1).y);
+		vert->push_back(malha->getIndN(0).x);
+		vert->push_back(malha->getIndN(0).y);
+		vert->push_back(malha->getIndN(0).z);
+
+		vert->push_back(malha->getIndV((k + (malha->getVector().size() / 2) + 1)% malha->getVector().size()).x / 860.0);
+		vert->push_back(malha->getIndV((k + (malha->getVector().size() / 2) + 1)% malha->getVector().size()).y / 640.0);
+		vert->push_back(malha->getIndV((k + (malha->getVector().size() / 2) + 1)% malha->getVector().size()).z);
+		vert->push_back(malha->getIndT(2).x);
+		vert->push_back(malha->getIndT(2).y);
+		vert->push_back(malha->getIndN(0).x);
+		vert->push_back(malha->getIndN(0).y);
+		vert->push_back(malha->getIndN(0).z);
+
+		vert->push_back(malha->getIndV(k + (malha->getVector().size() / 2)).x / 860.0);
+		vert->push_back(malha->getIndV(k + (malha->getVector().size() / 2)).y / 640.0);
+		vert->push_back(malha->getIndV(k + (malha->getVector().size() / 2)).z);
+		vert->push_back(malha->getIndT(3).x);
+		vert->push_back(malha->getIndT(3).y);
+		vert->push_back(malha->getIndN(0).x);
+		vert->push_back(malha->getIndN(0).y);
+		vert->push_back(malha->getIndN(0).z);
+		/*vert->push_back(malha->getIndV(k).x);
 		vert->push_back(malha->getIndV(k).y);
 		vert->push_back(malha->getIndV(k).z);
 		vert->push_back(malha->getIndT(k).x);
 		vert->push_back(malha->getIndT(k).y);
 		vert->push_back(malha->getIndN(k).x);
 		vert->push_back(malha->getIndN(k).y);
-		vert->push_back(malha->getIndN(k).z);
+		vert->push_back(malha->getIndN(k).z);*/
 	}
+	//cout << vert->size();
+	//cin >> l;
+	for (int k = 0; k < malha->getVector().size() / 2; k++) {
+		indi->push_back(k*4);
+		indi->push_back(k*4 + 1);
+		indi->push_back(k*4 + 2);
+		indi->push_back(k*4 + 2);
+		indi->push_back(k*4 + 3);
+		indi->push_back(k*4);
 
-	for (int k = 0; k < malha->getGroup(0)->getFaces().size(); k++) {
-		indi->push_back(malha->getGroup(0)->getFace(k)->getV(0));
+		/*indi->push_back(malha->getGroup(0)->getFace(k)->getV(0));
 		indi->push_back(malha->getGroup(0)->getFace(k)->getV(1));
-		indi->push_back(malha->getGroup(0)->getFace(k)->getV(2));
+		indi->push_back(malha->getGroup(0)->getFace(k)->getV(2));*/
 	}
-
+	//cout << indi->size();
+	//cin >> l;
 	vector<Material*> materiais;
+	//cout << malha->getnomematerial();
+	//cin >> l;
 	obj->readermaterial(malha->getnomematerial(), materiais);
 
 	glfwInit();
@@ -728,10 +778,10 @@ int desenhofinal() {
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vert->size(), &vert->at(0), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vert->size(), vert->data(), GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLint)*indi->size(), &indi->at(0), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLint)*indi->size(), indi->data(), GL_STATIC_DRAW);
 
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
@@ -752,6 +802,7 @@ int desenhofinal() {
 	// texture 1
 	// ---------
 	//unsigned char *data = SOIL_load_image("container.jpg", &width, &height, &nrChannels, SOIL_LOAD_RGBA);
+	cout << materiais.at(0)->getArquivo().c_str();
 	unsigned char *data = stbi_load(materiais.at(0)->getArquivo().c_str(), &width, &height, &nrChannels, 0);
 	glGenTextures(1, &texture1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
@@ -774,7 +825,7 @@ int desenhofinal() {
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture1" << std::endl;
 	}
 	stbi_image_free(data);
 	// texture 2
@@ -834,7 +885,7 @@ int desenhofinal() {
 	float nearPlane = 0.1f;
 	float farPlane = 1000.f;
 	glm::mat4 ProjectionMatrix(1.f);
-
+	//ProjectionMatrix = glm::ortho(0.0f, 860.0f, 640.0f, 0.0f, -1.0f, 1.0f);
 	ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
 	glm::vec3 lightPos0(0.0f, 0.f, 1.f);
@@ -857,6 +908,7 @@ int desenhofinal() {
 	glUniform3fv(glGetUniformLocation(shaderProgram, "shiny"), 1, glm::value_ptr(shiny));
 
 	glUseProgram(0);
+	cout << malha->getVector().size() * 4;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -883,6 +935,7 @@ int desenhofinal() {
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 
 		ProjectionMatrix = glm::mat4(1.f);
+		//ProjectionMatrix = glm::ortho(0.0f, 860.0f, 640.0f, 0.0f, -1.0f, 1.0f);
 		ProjectionMatrix = glm::perspective(glm::radians(fov), static_cast<float>(framebufferWidth) / framebufferHeight, nearPlane, farPlane);
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
@@ -893,7 +946,7 @@ int desenhofinal() {
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, malha->getVector().size()*4, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

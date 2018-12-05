@@ -365,7 +365,13 @@ public:
 		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
 		infile3 << "Na " << 300.1 << "\n";
-		infile3 << "map_Kd " << "pista.jpg";
+		infile3 << "map_Kd " << "preto.jpg" << "\n";
+		infile3 << "newmtl " << "pista" << "\n";
+		infile3 << "Ka " << 0.5 << " " << 0.5 << " " << 0.5 << "\n";
+		infile3 << "Kd " << 1 << " " << 1 << " " << 1 << "\n";
+		infile3 << "Ks " << 1 << " " << 1 << " " << 1 << "\n";
+		infile3 << "Na " << 300.1 << "\n";
+		infile3 << "map_Kd " << "awesomeface.png";
 		infile3.close();
 	}
 
